@@ -80,7 +80,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Sarabun", "Noto Sans Thai", "Leelawadee UI", "Segoe UI", system-ui, sans-serif;
     font-size: 18px; line-height: 1.6; letter-spacing: -.005em;
     -webkit-font-smoothing: antialiased;
-    display: flex; justify-content: center; align-items: flex-start; padding: 24px 16px;
+    display: flex; flex-direction: column; align-items: center; padding: 24px 16px;
   }
 
   /* ===== กระจก: วัสดุร่วมของการ์ด ผลลัพธ์ และปุ่มลอย =====
@@ -113,7 +113,7 @@
   @keyframes rise { from { opacity: 0; transform: translateY(18px) scale(.98); filter: blur(6px); } }
 
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-  h1 { font-size: 28px; margin: 0 0 2px; line-height: 1.25; font-weight: 700; letter-spacing: -.02em; }
+  h1 { font-size: 34px; margin: 0 0 2px; line-height: 1.15; font-weight: 800; letter-spacing: -.03em; }
   .sub { color: var(--muted); margin: 0 0 10px; font-size: 18px; }
   .helper { margin: 0 0 14px; color: var(--muted); font-size: 18px; }
   .theme-btn {
@@ -337,7 +337,7 @@
     .card > form { grid-column: 1; grid-row: 3; }
     .card > .crit { grid-column: 1; grid-row: 4; margin-top: 8px; }
     .card > .result, .card > .placeholder { grid-column: 2; grid-row: 1 / span 4; margin-top: 0; }
-    .card h1 { font-size: 26px; white-space: nowrap; }
+    .card h1 { font-size: 34px; white-space: nowrap; }
     .card .sub { margin-bottom: 8px; }
     .card .field { margin-bottom: 10px; }
     .card input { padding: 10px 16px; }
@@ -365,8 +365,8 @@
 <main class="card">
   <div class="top">
     <div>
-      <h1>คำนวณดัชนีมวลกาย (BMI)</h1>
-      <p class="sub">ใช้เกณฑ์สำหรับคนเอเชีย</p>
+      <h1>คำนวณ BMI</h1>
+      <p class="sub">ดัชนีมวลกาย · ใช้เกณฑ์สำหรับคนเอเชีย</p>
     </div>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="สลับโหมดสว่างหรือมืด">
       <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -374,7 +374,7 @@
     </button>
   </div>
 
-  <p class="helper">กรอกไม่ถูกก็ไม่เป็นไร ระบบจะบอกให้แก้ทีละช่อง และค่าที่คุณกรอกจะไม่ถูกบันทึกลงเครื่อง</p>
+  <p class="helper">กรอกผิดได้ ระบบจะบอกให้แก้ทีละช่อง · ค่าที่กรอกไม่ถูกบันทึก</p>
 
   <form id="bmiForm" novalidate>
     <fieldset class="seg-wrap">
@@ -835,6 +835,11 @@ $("bmiForm").addEventListener("submit", e => {
   current = { weight, height };
   setupWhatIf(weight, height);
   renderResult(weight, height, "submit");
+  // จอมือถือ (คอลัมน์เดียว): เลื่อนลงไปที่ผลลัพธ์ให้เอง ไม่ต้องหา
+  if (matchMedia("(max-width: 899px)").matches) {
+    const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("result").scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+  }
 });
 
 // แถบลองน้ำหนัก
